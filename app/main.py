@@ -8,8 +8,17 @@ from app.routes.appointment_type_routes import router as appointment_type_router
 from app.models.appointment import Appointment
 from app.routes.appointment_routes import router as appointment_router
 from app.routes.patient_record_routes import router as patient_record_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 Base.metadata.create_all(bind=engine)
 
