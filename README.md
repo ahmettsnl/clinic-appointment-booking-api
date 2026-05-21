@@ -72,3 +72,21 @@ The system dynamically calculates available booking slots based on:
 - Docker Compose
 - GitHub Actions CI
 - Render deployment
+
+---
+
+## Phase 2 Progress
+
+Implemented in Phase 2:
+
+- FastAPI backend application
+- PostgreSQL connection using Docker
+- MongoDB Atlas connection
+- Doctor endpoints
+- Appointment type endpoints
+- Appointment endpoints
+- Patient record endpoints using MongoDB
+- Smart slot availability endpoint
+- Appointment conflict prevention
+- Appointment status lifecycle update
+- AI-generated frontend prototype using Lovable
