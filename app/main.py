@@ -9,6 +9,8 @@ from app.models.appointment import Appointment
 from app.routes.appointment_routes import router as appointment_router
 from app.routes.patient_record_routes import router as patient_record_router
 from fastapi.middleware.cors import CORSMiddleware
+from app.models.user import User
+from app.routes.auth_routes import router as auth_router
 
 app = FastAPI()
 
@@ -26,6 +28,7 @@ app.include_router(doctor_router)
 app.include_router(appointment_type_router)
 app.include_router(appointment_router)
 app.include_router(patient_record_router)
+app.include_router(auth_router)
 
 @app.get("/")
 def root():
