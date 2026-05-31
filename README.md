@@ -90,3 +90,17 @@ Implemented in Phase 2:
 - Appointment conflict prevention
 - Appointment status lifecycle update
 - AI-generated frontend prototype using Lovable
+
+---
+
+## Phase 3 Progress
+
+Implemented in Phase 3:
+
+- JWT Authentication
+- User Registration and Login
+- Password Hashing with bcrypt
+- Protected Routes using JWT tokens
+- Role-Based Access Control (Admin, Doctor, Patient)
+- Pydantic Input Validation
+- API Rate Limiting with SlowAPI
