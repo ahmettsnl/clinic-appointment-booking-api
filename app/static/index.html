@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clinic Appointment Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    header {
+      background: #0f766e;
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #0f766e;
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #0f766e;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #115e59;
+    }
+
+    pre {
+      background: #111827;
+      color: #d1fae5;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    .slot {
+      display: inline-block;
+      background: #ccfbf1;
+      color: #134e4a;
+      padding: 8px 12px;
+      margin: 5px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Clinic Appointment Booking API</h1>
+  <p>Simple frontend for FastAPI backend demo</p>
+</header>
+
+<div class="container">
+  <div class="grid">
+
+    <div class="card">
+      <h2>Doctors</h2>
+      <button onclick="getDoctors()">Load Doctors</button>
+      <pre id="doctorsOutput">No data yet</pre>
+    </div>
+
+    <div class="card">
+      <h2>Appointment Types</h2>
+      <button onclick="getAppointmentTypes()">Load Appointment Types</button>
+      <pre id="typesOutput">No data yet</pre>
+    </div>
+
+    <div class="card">
+      <h2>Available Slots</h2>
+      <input id="slotDoctorId" placeholder="Doctor ID" value="1" />
+      <button onclick="getSlots()">Get Slots</button>
+      <div id="slotsOutput">No slots yet</div>
+    </div>
+
+    <div class="card">
+      <h2>Book Appointment</h2>
+      <input id="doctorId" placeholder="Doctor ID" value="1" />
+      <input id="patientId" placeholder="Patient ID" value="1" />
+      <input id="appointmentTypeId" placeholder="Appointment Type ID" value="1" />
+      <input id="startTime" placeholder="Start Time" value="2026-06-01T10:00:00" />
+      <button onclick="createAppointment()">Book Appointment</button>
+      <pre id="appointmentOutput">No appointment yet</pre>
+    </div>
+
+    <div class="card">
+      <h2>Register User</h2>
+      <input id="regName" placeholder="Name" value="Ahmet" />
+      <input id="regEmail" placeholder="Email" value="ahmetfrontend@example.com" />
+      <input id="regPassword" placeholder="Password" value="123456" />
+      <select id="regRole">
+        <option value="patient">patient</option>
+        <option value="doctor">doctor</option>
+        <option value="admin">admin</option>
+      </select>
+      <button onclick="registerUser()">Register</button>
+      <pre id="registerOutput">No data yet</pre>
+    </div>
+
+    <div class="card">
+      <h2>Login</h2>
+      <input id="loginEmail" placeholder="Email" value="ahmetfrontend@example.com" />
+      <input id="loginPassword" placeholder="Password" value="123456" />
+      <button onclick="loginUser()">Login</button>
+      <pre id="loginOutput">No token yet</pre>
+    </div>
+
+    <div class="card">
+      <h2>Patient Records</h2>
+      <button onclick="getRecords()">Load Records</button>
+      <pre id="recordsOutput">No records yet</pre>
+    </div>
+
+    <div class="card">
+      <h2>Create Patient Record</h2>
+      <input id="recordPatientId" placeholder="Patient ID" value="1" />
+      <input id="diagnosis" placeholder="Diagnosis" value="Flu" />
+      <input id="prescription" placeholder="Prescription" value="Medicine A" />
+      <textarea id="visitNotes">Patient has mild fever.</textarea>
+      <button onclick="createRecord()">Create Record</button>
+      <pre id="recordCreateOutput">No data yet</pre>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const API_BASE = "";
+
+  function show(id, data) {
+    document.getElementById(id).textContent = JSON.stringify(data, null, 2);
+  }
+
+  async function getDoctors() {
+    const res = await fetch(`${API_BASE}/doctors`);
+    const data = await res.json();
+    show("doctorsOutput", data);
+  }
+
+  async function getAppointmentTypes() {
+    const res = await fetch(`${API_BASE}/appointment-types`);
+    const data = await res.json();
+    show("typesOutput", data);
+  }
+
+  async function getSlots() {
+    const doctorId = document.getElementById("slotDoctorId").value;
+    const res = await fetch(`${API_BASE}/doctors/${doctorId}/slots`);
+    const data = await res.json();
+
+    const box = document.getElementById("slotsOutput");
+    box.innerHTML = "";
+
+    if (data.available_slots && data.available_slots.length > 0) {
+      data.available_slots.forEach(slot => {
+        const span = document.createElement("span");
+        span.className = "slot";
+        span.textContent = slot;
+        box.appendChild(span);
+      });
+    } else {
+      box.textContent = "No available slots";
+    }
+  }
+
+  async function createAppointment() {
+    const body = {
+      doctor_id: Number(document.getElementById("doctorId").value),
+      patient_id: Number(document.getElementById("patientId").value),
+      appointment_type_id: Number(document.getElementById("appointmentTypeId").value),
+      start_time: document.getElementById("startTime").value
+    };
+
+    const res = await fetch(`${API_BASE}/appointments`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+    show("appointmentOutput", data);
+  }
+
+  async function registerUser() {
+    const body = {
+      name: document.getElementById("regName").value,
+      email: document.getElementById("regEmail").value,
+      password: document.getElementById("regPassword").value,
+      role: document.getElementById("regRole").value
+    };
+
+    const res = await fetch(`${API_BASE}/auth/register`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+    show("registerOutput", data);
+  }
+
+  async function loginUser() {
+    const body = {
+      email: document.getElementById("loginEmail").value,
+      password: document.getElementById("loginPassword").value
+    };
+
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+    show("loginOutput", data);
+  }
+
+  async function getRecords() {
+    const res = await fetch(`${API_BASE}/records`);
+    const data = await res.json();
+    show("recordsOutput", data);
+  }
+
+  async function createRecord() {
+    const body = {
+      patient_id: Number(document.getElementById("recordPatientId").value),
+      diagnosis: document.getElementById("diagnosis").value,
+      prescriptions: [document.getElementById("prescription").value],
+      visit_notes: document.getElementById("visitNotes").value
+    };
+
+    const res = await fetch(`${API_BASE}/records`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+    show("recordCreateOutput", data);
+  }
+</script>
+
+</body>
+</html>

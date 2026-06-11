@@ -11,8 +11,17 @@ from app.routes.patient_record_routes import router as patient_record_router
 from fastapi.middleware.cors import CORSMiddleware
 from app.models.user import User
 from app.routes.auth_routes import router as auth_router
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from app.routes.auth_routes import limiter
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,6 +38,8 @@ app.include_router(appointment_type_router)
 app.include_router(appointment_router)
 app.include_router(patient_record_router)
 app.include_router(auth_router)
+
+app.mount("/frontend", StaticFiles(directory="app/static", html=True), name="static")
 
 @app.get("/")
 def root():

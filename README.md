@@ -104,3 +104,13 @@ Implemented in Phase 3:
 - Role-Based Access Control (Admin, Doctor, Patient)
 - Pydantic Input Validation
 - API Rate Limiting with SlowAPI
+
+## Live Deployment
+
+Public API URL:
+
+https://clinic-appointment-booking-api-cabo.onrender.com
+
+Swagger Documentation:
+
+https://clinic-appointment-booking-api-cabo.onrender.com/docs
