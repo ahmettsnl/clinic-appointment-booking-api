@@ -114,3 +114,48 @@ https://clinic-appointment-booking-api-cabo.onrender.com
 Swagger Documentation:
 
 https://clinic-appointment-booking-api-cabo.onrender.com/docs
+
+## Frontend Demo
+
+A simple frontend interface has been deployed to demonstrate the main API features, including:
+
+* User Registration
+* User Login
+* Doctor Management
+* Appointment Type Management
+* Appointment Booking
+* Available Slot Viewing
+* Patient Record Management
+
+Frontend URL:
+
+https://clinic-appointment-booking-api-cabo.onrender.com/frontend/
+
+---
+
+## Repository
+
+GitHub Repository:
+
+https://github.com/ahmettsnl/clinic-appointment-booking-api
+
+---
+
+## API Documentation
+
+Swagger UI:
+
+https://clinic-appointment-booking-api-cabo.onrender.com/docs
+
+---
+
+## Deployment
+
+Application successfully deployed on Render with:
+
+* Docker Containerization
+* Docker Compose Configuration
+* GitHub Actions Continuous Integration
+* PostgreSQL Database
+* MongoDB Database
+* Public Production URL
